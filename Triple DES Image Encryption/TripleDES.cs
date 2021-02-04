@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Triple_DES_Image_Encryption
 {
@@ -19,18 +20,27 @@ namespace Triple_DES_Image_Encryption
             tripleDes.Padding = PaddingMode.PKCS7;
         }
 
-        public void EncryptFile(string filepath)
+        public void EncryptFile(string[] filepaths)
         {
-            byte[] Bytes = File.ReadAllBytes(filepath);
-            byte[] eBytes = tripleDes.CreateEncryptor().TransformFinalBlock(Bytes, 0, Bytes.Length);
-            File.WriteAllBytes(filepath, eBytes);
+            foreach(string filepath in filepaths)
+            {
+                byte[] Bytes = File.ReadAllBytes(filepath);
+                byte[] eBytes = tripleDes.CreateEncryptor().TransformFinalBlock(Bytes, 0, Bytes.Length);
+                File.WriteAllBytes(filepath, eBytes);
+            }
+            
         }
 
-        public void DecryptFile(string filepath)
+        public void DecryptFile(string[] filepaths)
         {
-            byte[] Bytes = File.ReadAllBytes(filepath);
-            byte[] dBytes = tripleDes.CreateDecryptor().TransformFinalBlock(Bytes, 0, Bytes.Length);
-            File.WriteAllBytes(filepath, dBytes);
+            foreach (string filepath in filepaths)
+            {
+                byte[] Bytes = File.ReadAllBytes(filepath);
+                byte[] dBytes = tripleDes.CreateDecryptor().TransformFinalBlock(Bytes, 0, Bytes.Length);
+                File.WriteAllBytes(filepath, dBytes);
+            }
         }
+
+        
     }
 }
